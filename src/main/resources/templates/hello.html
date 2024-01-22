@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Hello</title>
+</head>
+<body>
+<p th:text="'안녕하세요. ' + ${data}" >안녕하세요!</p>
+<!--th:text: 서버사이드 랜더링했을 때 타임리프를 통해 출력
+    p 태그 사이의 "안녕하세요": 순수한 html을 랜더링했을 때 출력-->
+</body>
+</html>

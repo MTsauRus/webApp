@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/hgrshop
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create # 애플리케이션 실행 시점에 기존 정보 삭제 후 테이블 생성.
+    properties:
+      hibernate:
+#        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace # 로그에 파라미터가 남음
