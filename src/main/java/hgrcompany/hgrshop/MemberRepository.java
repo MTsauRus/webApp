@@ -1,5 +1,6 @@
 package hgrcompany.hgrshop;
 
+import hgrcompany.hgrshop.domain.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;

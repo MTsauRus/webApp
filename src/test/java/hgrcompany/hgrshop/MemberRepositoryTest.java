@@ -1,5 +1,6 @@
 package hgrcompany.hgrshop;
 
+import hgrcompany.hgrshop.domain.Member;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,18 +19,18 @@ public class MemberRepositoryTest {
     @Autowired MemberRepository memberRepository;
     @Test
     @Transactional // test가 끝난 후 롤백
-    //@Rollback(false) // 테스트한 후 롤백을 하지 않는 어노테이션
+    @Rollback(false) // 테스트한 후 롤백을 하지 않는 어노테이션
     public void testMember() throws Exception {
         // given
         Member member = new Member();
-        member.setUsername("hgr");
+        member.setName("hgr");
         // when
         Long savedId = memberRepository.save(member);
         Member findMember = memberRepository.find(savedId);
 
         //then
         Assertions.assertThat(findMember.getId()).isEqualTo(member.getId());
-        Assertions.assertThat(findMember.getUsername()).isEqualTo(member.getUsername());
+        Assertions.assertThat(findMember.getName()).isEqualTo(member.getName());
 
 
     }

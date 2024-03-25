@@ -10,7 +10,7 @@ spring:
       ddl-auto: create # 애플리케이션 실행 시점에 기존 정보 삭제 후 테이블 생성.
     properties:
       hibernate:
-#        show_sql: true
+     #   show_sql: true
         format_sql: true
 
 logging:
