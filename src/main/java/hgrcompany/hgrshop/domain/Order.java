@@ -1,7 +1,9 @@
 package hgrcompany.hgrshop.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -11,6 +13,11 @@ import java.util.List;
 @Entity
 @Table(name="orders")
 @Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+// 서비스 등 다른 곳에서의 order 생성을 막기 위해
+// 해당 생성자를 protected로 지정한다.
+// 그러면 다른 곳에서 생성 불가능.
+// 여기에 있는 생성 메서드를 활용하는 방법밖에 없음
 public class Order {
 
     @Id @GeneratedValue
@@ -54,4 +61,41 @@ public class Order {
         this.delivery = delivery;
         delivery.setOrder(this);
     }
+
+    //==생성 메서드==//
+    public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
+        Order order = new Order();
+        order.setMember(member);
+        order.setDelivery(delivery);
+        for (OrderItem orderItem : orderItems) {
+            order.addOrderItem(orderItem);
+        }
+        order.setStatus(OrderStatus.ORDER);
+        order.setOrderDate(LocalDateTime.now());
+        return order;
+    }
+
+    //==비즈니스 로직==//
+    // 주문 취소
+    public void cancel() {
+        if (delivery.getStatus() == DeliveryStatus.COMP) { // 이미 배송 완료
+            throw new IllegalStateException("이미 배송 완료된 상품은 취소가 불가능");
+        }
+
+        this.setStatus(OrderStatus.CANCEL);
+        for (OrderItem orderItem : orderItems) {
+            orderItem.cancel(); // 한 order 안에 여러 개의 주문이 있는 경우 모두 캔슬해줘야 함.
+        }
+    }
+
+    //==조회 로직==//
+    // 전체 주문 가격 조회
+    public int getTotalPrice() {
+        int totalPrice = 0;
+        for (OrderItem orderItem : orderItems) {
+            totalPrice += orderItem.getTotalPrice();
+        }
+        return totalPrice;
+    }
+
 }
